@@ -1,4 +1,46 @@
 #coding:utf-8
+
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow , QLabel , QVBoxLayout , QWidget , QLineEdit
+
+def main () :
+    app = QApplication(sys.argv)
+    
+    window = QMainWindow()
+    window.setWindowTitle('codage de cesar')
+    window.setGeometry(100 , 100 , 600 , 100)
+    window.setFixedSize(600 , 100)
+    
+    container = QWidget(window)
+    container.setStyleSheet("padding: 20px;")
+    
+    layout = QVBoxLayout(container)
+    
+    label = QLabel("Entrez le message à crypter")
+    label.setStyleSheet("font-size: 22px; color: #000;")
+    label.setWordWrap(True)
+    
+    message = QLineEdit()
+    
+    layout.addStretch()
+    layout.setStyleSheet("background-color: #242938;")
+    container.setStyleSheet("""
+        QVBoxLayout {
+            display : flex;
+            flex-shrink : 0 ;
+            justify-content : center;
+            align-items : center;
+            flex-direction : column;
+        }    
+    """)
+    
+    layout.addWidget(label)
+    layout.addWidget(message)
+    window.setCentralWidget(container)
+    
+    window.show()
+    sys.exit(app.exec_()) # Main loop
+    
 def chiffrement(message, decalage):
     message_chiffre = ''
     decalage = parse(decalage)
@@ -39,3 +81,6 @@ print("Message chiffré:", message_chiffre)
 
 message_dechiffre = dechiffrement(message_chiffre, decalage)
 print("Message déchiffré:", message_dechiffre)
+
+if __name__ == '__main__' :
+    main()

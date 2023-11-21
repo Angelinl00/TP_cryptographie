@@ -1,41 +1,58 @@
 #coding:utf-8
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow , QLabel , QVBoxLayout , QWidget , QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow , QLabel , QVBoxLayout , QWidget , QLineEdit , QPushButton
 
 def main () :
     app = QApplication(sys.argv)
     
     window = QMainWindow()
     window.setWindowTitle('codage de cesar')
-    window.setGeometry(100 , 100 , 600 , 100)
-    window.setFixedSize(600 , 100)
+    window.setStyleSheet("""
+        min-width: 400px;
+        background : #242938;
+        height : auto;
+    """)
     
     container = QWidget(window)
-    container.setStyleSheet("padding: 20px;")
+    container.setStyleSheet("background-color: #fff; padding: 20px;")
     
     layout = QVBoxLayout(container)
     
     label = QLabel("Entrez le message à crypter")
-    label.setStyleSheet("font-size: 22px; color: #000;")
+    label.setStyleSheet("font-size: 15px; color: #fff ;font : bold")
     label.setWordWrap(True)
     
     message = QLineEdit()
+    message.setStyleSheet("""
+        border-radius : 5px;
+        background : #3A3F4F;
+        font-size : 18px;
+        color : #c0c0c0;
+    """)
+    
+    button = QPushButton("chiffrer ?")
+    button.setStyleSheet("""
+        border-radius : 5px;
+        background : #4FACD9;
+        font-size : 18px;
+        color : #fff;
+    """)
     
     layout.addStretch()
-    layout.setStyleSheet("background-color: #242938;")
     container.setStyleSheet("""
         QVBoxLayout {
             display : flex;
             flex-shrink : 0 ;
-            justify-content : center;
-            align-items : center;
             flex-direction : column;
+            justify-content : start ;
+            align-items : start
         }    
     """)
     
     layout.addWidget(label)
     layout.addWidget(message)
+    layout.addWidget(button)
     window.setCentralWidget(container)
     
     window.show()

@@ -6,11 +6,24 @@ from PyQt5.QtWidgets import QApplication, QMainWindow , QLabel , QVBoxLayout , Q
 def main () :
     app = QApplication(sys.argv)
     
+    def on_chiffrement_button_clicked() :
+        text_a_chiffrer = message.text()
+        cle_ = cle.text()
+        encrypted_text = chiffrement(text_a_chiffrer , cle_) # Résultat du chiffrement
+        
+        result = "Message chiffré : "+encrypted_text
+        result = QLabel(result)
+        result.setStyleSheet("""
+            font-size : 15px;
+            color : #a9a9a9;
+        """)
+        layout.addWidget(result)
+    
     window = QMainWindow()
     window.setWindowTitle('codage de cesar')
     window.setStyleSheet("""
         min-width: 400px;
-        background : #242938;
+        background : #000;
         height : auto;
     """)
     
@@ -19,25 +32,63 @@ def main () :
     
     layout = QVBoxLayout(container)
     
-    label = QLabel("Entrez le message à crypter")
-    label.setStyleSheet("font-size: 15px; color: #fff ;font : bold")
-    label.setWordWrap(True)
+    labelMessage = QLabel("Entrez le message à crypter")
+    labelMessage.setStyleSheet("font-size: 15px; color: #fff ;font : bold")
+    labelMessage.setWordWrap(True)
     
     message = QLineEdit()
     message.setStyleSheet("""
         border-radius : 5px;
-        background : #3A3F4F;
+        background : #232323;
         font-size : 18px;
         color : #c0c0c0;
+        padding-left : 3px ;
+        padding-right : 3px;
+        margin-bottom : 7px;
+    """)
+    
+    labelCle = QLabel("Entrez le décalage")
+    labelCle.setStyleSheet("""
+        QLabel {
+            font-size: 15px;
+            color: #fff ;
+            font : bold;
+        }
+    """)
+    
+    cle = QLineEdit()
+    cle.setStyleSheet("""
+        border-radius : 5px;
+        background : #232323;
+        font-size : 18px;
+        color : #c0c0c0;
+        padding-left : 3px ;
+        padding-right : 3px;
+        margin-bottom : 7px;
     """)
     
     button = QPushButton("chiffrer ?")
     button.setStyleSheet("""
+        margin-top : 7px;
         border-radius : 5px;
-        background : #4FACD9;
+        background : #FFF;
+        font-size : 18px;
+        color : #000;
+    """)
+    
+    button_dechiffrement = QPushButton("Déchiffrer ?")
+    button_dechiffrement.setStyleSheet("""
+        border-radius : 5px;
+        background : #202020;
+        border : 2px solid #fff;
         font-size : 18px;
         color : #fff;
+        padding-left : 3px;
+        padding-right : 3px;
+        margin-top : 7px;
     """)
+    
+    button.clicked.connect(on_chiffrement_button_clicked)
     
     layout.addStretch()
     container.setStyleSheet("""
@@ -46,13 +97,16 @@ def main () :
             flex-shrink : 0 ;
             flex-direction : column;
             justify-content : start ;
-            align-items : start
+            align-items : start;
         }    
     """)
     
-    layout.addWidget(label)
+    layout.addWidget(labelMessage)
     layout.addWidget(message)
+    layout.addWidget(labelCle)
+    layout.addWidget(cle)
     layout.addWidget(button)
+    layout.addWidget(button_dechiffrement)
     window.setCentralWidget(container)
     
     window.show()
@@ -63,7 +117,7 @@ def chiffrement(message, decalage):
     decalage = parse(decalage)
     for lettre in message:
         if lettre.isalpha():
-            decalage %= 26  # Assure un décalage dans l'intervalle [0, 25]
+            decalage %= 26
             if lettre.islower():
                 ascii_debut = ord('a')
             else:
@@ -75,23 +129,23 @@ def chiffrement(message, decalage):
     return message_chiffre
 
 def parse(decalage):
-    if isinstance(decalage, str) and decalage.isalpha():  # Vérifie si le décalage est une lettre
-        decalage = ord(decalage.lower()) - ord('a')  # Obtient la valeur numérique du décalage
+    if isinstance(decalage, str) and decalage.isalpha():
+        decalage = ord(decalage.lower()) - ord('a')
         return decalage
     else:
         try:
-            decalage = int(decalage)  # Tente de convertir en nombre entier
+            decalage = int(decalage)
             return decalage
         except ValueError:
             print("Le décalage doit être une lettre ou un nombre entier.")
-            return message_chiffre  # Retourne le message chiffré si le décalage n'est ni une lettre ni un nombre
+            return message_chiffre
 
 def dechiffrement(message_chiffre, decalage):
     decalage = parse(decalage)
-    return chiffrement(message_chiffre, -decalage)  # Utilise 26 - decalage pour inverser le décalage
+    return chiffrement(message_chiffre, -decalage)
 
-message_original = "Bonjour, ceci est un exemple de message à chiffrer !"
-decalage = 'C'  # Décalage en tant que caractère ou nombre
+message_original = "ce message est secret"
+decalage = 'w'
 
 message_chiffre = chiffrement(message_original, decalage)
 print("Message chiffré:", message_chiffre)
@@ -99,5 +153,6 @@ print("Message chiffré:", message_chiffre)
 message_dechiffre = dechiffrement(message_chiffre, decalage)
 print("Message déchiffré:", message_dechiffre)
 
-if __name__ == '__main__' :
+if __name__ == "__main__" :
     main()
+    
